@@ -1,0 +1,116 @@
+.navbar {
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 1.5rem;
+}
+
+.navbar__brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.navbar__brand:hover {
+  color: #fff;
+}
+
+.navbar__icon {
+  font-size: 1.5rem;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar__link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.navbar__link:hover {
+  color: #f1f5f9;
+  background: #334155;
+}
+
+.navbar__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar__email {
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.navbar__btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.navbar__btn--login {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.navbar__btn--login:hover {
+  background: #2563eb;
+  color: #fff;
+}
+
+.navbar__btn--logout {
+  background: transparent;
+  border: 1px solid #475569;
+  color: #94a3b8;
+}
+
+.navbar__btn--logout:hover {
+  background: #334155;
+  color: #f1f5f9;
+  border-color: #64748b;
+}
+
+@media (max-width: 640px) {
+  .navbar__container {
+    padding: 0 1rem;
+  }
+
+  .navbar__email {
+    display: none;
+  }
+
+  .navbar__links {
+    gap: 0.5rem;
+  }
+}
