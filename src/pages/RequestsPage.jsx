@@ -16,8 +16,9 @@ export default function RequestsPage() {
   // Filters
   const [statusFilter, setStatusFilter] = useState('');
   const [titleFilter, setTitleFilter] = useState('');
+  const [totalRequestsCount, setTotalRequestsCount] = useState(0);
   const [page, setPage] = useState(1);
-  const perPage = 25;
+  const perPage = 10;
 
   const fetchRequests = useCallback(async () => {
     setLoading(true);
@@ -30,6 +31,7 @@ export default function RequestsPage() {
         perPage,
       });
       setRequests(data.requests || []);
+      setTotalRequestsCount(data.total_count || 0);
     } catch {
       setError('Failed to load requests.');
     } finally {
@@ -92,7 +94,10 @@ export default function RequestsPage() {
           <select
             className="requests-page__filter-select"
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={(e) => {
+              setPage(1);
+              setStatusFilter(e.target.value);
+            }}
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -163,7 +168,7 @@ export default function RequestsPage() {
               <span className="requests-page__page-info">Page {page}</span>
               <button
                 className="requests-page__page-btn"
-                disabled={requests.length < perPage}
+                disabled={requests.length < perPage || page * perPage >= totalRequestsCount}
                 onClick={() => setPage((p) => p + 1)}
               >
                 Next →

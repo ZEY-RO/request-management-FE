@@ -1,0 +1,139 @@
+.create-page {
+  min-height: 100vh;
+  background: #0f172a;
+}
+
+.create-page__main {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.create-page__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+.create-page__subtitle {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 2rem;
+}
+
+.create-page__form {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.create-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.create-page__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.create-page__required {
+  color: #f87171;
+}
+
+.create-page__input,
+.create-page__textarea,
+.create-page__select {
+  padding: 0.75rem 1rem;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.create-page__input:focus,
+.create-page__textarea:focus,
+.create-page__select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.create-page__input::placeholder,
+.create-page__textarea::placeholder {
+  color: #475569;
+}
+
+.create-page__textarea {
+  resize: vertical;
+}
+
+.create-page__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.create-page__btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.create-page__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.create-page__btn--submit {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.create-page__btn--submit:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.create-page__btn--cancel {
+  background: transparent;
+  border: 1px solid #475569;
+  color: #94a3b8;
+}
+
+.create-page__btn--cancel:hover {
+  background: #334155;
+  color: #f1f5f9;
+}
+
+.create-page__error {
+  background: #451a1a;
+  border: 1px solid #7f1d1d;
+  color: #fca5a5;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.create-page__success {
+  background: #3b82f6;
+  border: 1px solid #053177;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
