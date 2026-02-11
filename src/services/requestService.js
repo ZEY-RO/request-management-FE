@@ -3,12 +3,13 @@ import api from './api';
 export const requestService = {
   /**
    * List requests with optional filters.
-   * GET /requests?status=...&title=...&page=...&per_page=...
+   * GET /requests?status=...&title=...&priority=...&page=...&per_page=...
    */
-  async list({ status, title, page = 1, perPage = 25 } = {}) {
+  async list({ status, title, priority, page = 1, perPage = 25 } = {}) {
     const params = { page, per_page: perPage };
     if (status) params.status = status;
     if (title) params.title = title;
+    if (priority) params.priority = priority;
 
     const response = await api.get('/requests', { params });
     return response.data;
@@ -27,9 +28,9 @@ export const requestService = {
    * Create a new request (authenticated).
    * POST /requests
    */
-  async create({ title, description, status = 'pending' }) {
+  async create({ title, description, status = 'pending', priority }) {
     const response = await api.post('/requests', {
-      request: { title, description, status },
+      request: { title, description, status, priority },
     });
     return response.data;
   },

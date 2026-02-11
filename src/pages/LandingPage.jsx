@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../context/useAuth';
 import './LandingPage.css';
 
 export default function LandingPage() {
@@ -13,9 +13,19 @@ export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGuestLoading, setIsGuestLoading] = useState(false);
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   // Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/requests', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
   if (isAuthenticated) {
-    navigate('/requests', { replace: true });
     return null;
   }
 
@@ -24,13 +34,19 @@ export default function LandingPage() {
     setError('');
     setIsLoading(true);
 
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       await login({ email, password });
       navigate('/requests');
-    } catch (err) {
+    } catch (error) {
       const message =
-        err.response?.data?.error ||
-        err.response?.data?.errors?.join(', ') ||
+        error.response?.data?.error ||
+        error.response?.data?.errors?.join(', ') ||
         'Invalid email or password. Please try again.';
       setError(message);
     } finally {
@@ -45,7 +61,7 @@ export default function LandingPage() {
     try {
       await guestLogin();
       navigate('/requests');
-    } catch (err) {
+    } catch {
       setError('Unable to log in as guest. Please try again.');
     } finally {
       setIsGuestLoading(false);

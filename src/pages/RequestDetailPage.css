@@ -37,6 +37,11 @@
   margin-bottom: 1.5rem;
 }
 
+.detail-page__badges {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .detail-page__title {
   font-size: 1.5rem;
   font-weight: 700;
