@@ -23,4 +23,33 @@ export const requestService = {
     return response.data;
   },
 
+  /**
+   * Create a new request (authenticated).
+   * POST /requests
+   */
+  async create({ title, description, status = 'pending' }) {
+    const response = await api.post('/requests', {
+      request: { title, description, status },
+    });
+    return response.data;
+  },
+
+  /**
+   * Update a request (authenticated, owner only).
+   * PATCH /requests/:id
+   */
+  async update(id, updates) {
+    const response = await api.patch(`/requests/${id}`, {
+      request: updates,
+    });
+    return response.data;
+  },
+
+  /**
+   * Delete a request (authenticated, owner only).
+   * DELETE /requests/:id
+   */
+  async delete(id) {
+    await api.delete(`/requests/${id}`);
+  },
 };
