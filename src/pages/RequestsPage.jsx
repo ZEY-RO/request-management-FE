@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { requestService } from '../services/requestService';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../context/useAuth';
 import StatusBadge from '../components/StatusBadge';
+import PriorityBadge from '../components/PriorityBadge';
 import Navbar from '../components/Navbar';
 import './RequestsPage.css';
 
 export default function RequestsPage() {
-  const { isAuthenticated, isGuest } = useAuth();
+  const { isAuthenticated, isGuest, user } = useAuth();
 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ export default function RequestsPage() {
   // Filters
   const [statusFilter, setStatusFilter] = useState('');
   const [titleFilter, setTitleFilter] = useState('');
+  const [priorityFilter, setPriorityFilter] = useState('');
   const [totalRequestsCount, setTotalRequestsCount] = useState(0);
   const [page, setPage] = useState(1);
   const perPage = 10;
@@ -27,6 +29,7 @@ export default function RequestsPage() {
       const data = await requestService.list({
         status: statusFilter || undefined,
         title: titleFilter || undefined,
+        priority: priorityFilter || undefined,
         page,
         perPage,
       });
@@ -37,7 +40,7 @@ export default function RequestsPage() {
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, titleFilter, page]);
+  }, [statusFilter, titleFilter, priorityFilter, page]);
 
   useEffect(() => {
     fetchRequests();
@@ -52,7 +55,22 @@ export default function RequestsPage() {
   const handleClearFilters = () => {
     setStatusFilter('');
     setTitleFilter('');
+    setPriorityFilter('');
     setPage(1);
+  };
+
+  const handleDelete = async (requestId) => {
+    if (!window.confirm('Are you sure you want to delete this request?')) {
+      return;
+    }
+
+    try {
+      await requestService.delete(requestId);
+      // Refresh the requests list
+      fetchRequests();
+    } catch {
+      setError('Failed to delete request.');
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -104,10 +122,23 @@ export default function RequestsPage() {
             <option value="approved">Approved</option>
             <option value="rejected">Rejected</option>
           </select>
+          <select
+            className="requests-page__filter-select"
+            value={priorityFilter}
+            onChange={(e) => {
+              setPage(1);
+              setPriorityFilter(e.target.value);
+            }}
+          >
+            <option value="">All Priorities</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
           <button type="submit" className="requests-page__filter-btn">
             Search
           </button>
-          {(statusFilter || titleFilter) && (
+          {(statusFilter || titleFilter || priorityFilter) && (
             <button
               type="button"
               className="requests-page__filter-clear"
@@ -138,22 +169,43 @@ export default function RequestsPage() {
         ) : (
           <>
             <div className="requests-page__list">
-              {requests.map((req) => (
-                <Link
-                  key={req.id}
-                  to={`/requests/${req.id}`}
-                  className="requests-page__card"
-                >
-                  <div className="requests-page__card-header">
-                    <h3 className="requests-page__card-title">{req.title}</h3>
-                    <StatusBadge status={req.status} />
+              {requests.map((req) => {
+                const isOwner = isAuthenticated && !isGuest && user?.id === req.user_id;
+                return (
+                  <div key={req.id} className="requests-page__card">
+                    <Link to={`/requests/${req.id}`} className="requests-page__card-link">
+                      <div className="requests-page__card-header">
+                        <h3 className="requests-page__card-title">{req.title}</h3>
+                        <div className="requests-page__badges">
+                          <StatusBadge status={req.status} />
+                          <PriorityBadge priority={req.priority} />
+                        </div>
+                      </div>
+                      <div className="requests-page__card-meta">
+                        <span>Author: {req.user?.email || 'Unknown'}</span>
+                        <span>ID: #{req.id}</span>
+                        <span>{formatDate(req.created_at)}</span>
+                      </div>
+                    </Link>
+                    {isOwner && (
+                      <div className="requests-page__card-actions">
+                        <Link
+                          to={`/requests/${req.id}/edit`}
+                          className="requests-page__action-btn requests-page__action-btn--edit"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(req.id)}
+                          className="requests-page__action-btn requests-page__action-btn--delete"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <div className="requests-page__card-meta">
-                    <span>ID: #{req.id}</span>
-                    <span>{formatDate(req.created_at)}</span>
-                  </div>
-                </Link>
-              ))}
+                );
+              })}
             </div>
 
             {/* Pagination */}

@@ -10,6 +10,7 @@ export default function CreateRequestPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('pending');
+  const [priority, setPriority] = useState('low');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -20,11 +21,12 @@ export default function CreateRequestPage() {
     setIsLoading(true);
 
     try {
-      const data = await requestService.create({ title, description, status });
+      await requestService.create({ title, description, status, priority });
       setSuccess(true);
       setTitle('');
       setDescription('');
       setStatus('pending');
+      setPriority('low');
       setTimeout(() => {
         navigate(`/requests`);
       }, 2000);
@@ -87,8 +89,25 @@ export default function CreateRequestPage() {
           </div>
 
           <div className="create-page__field">
+            <label htmlFor="priority" className="create-page__label">
+              Priority <span className="create-page__required">*</span>
+            </label>
+            <select
+              id="priority"
+              className="create-page__select"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              required
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+
+          <div className="create-page__field">
             <label htmlFor="status" className="create-page__label">
-              Status
+              Status <span className="create-page__required">*</span>
             </label>
             <select
               id="status"

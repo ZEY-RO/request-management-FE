@@ -1,30 +1,50 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { authService } from '../services/authService';
-
-const AuthContext = createContext(null);
+import AuthContext from './authContext';
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // Restore session from localStorage on mount
-  useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+  const safeGetItem = useCallback((key) => {
+    try {
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return null;
+      }
+      return window.localStorage.getItem(key);
+    } catch {
+      return null;
     }
-    setLoading(false);
   }, []);
+
+  const safeSetItem = useCallback((key, value) => {
+    try {
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return;
+      }
+      window.localStorage.setItem(key, value);
+    } catch {
+      // ignore storage errors (e.g., private mode)
+    }
+  }, []);
+
+  const [token, setToken] = useState(() => safeGetItem('token'));
+  const [user, setUser] = useState(() => {
+    const savedUser = safeGetItem('user');
+    if (!savedUser) {
+      return null;
+    }
+    try {
+      return JSON.parse(savedUser);
+    } catch {
+      return null;
+    }
+  });
+  const [loading] = useState(false);
 
   const saveSession = useCallback((userData, jwtToken) => {
     setUser(userData);
     setToken(jwtToken);
-    localStorage.setItem('token', jwtToken);
-    localStorage.setItem('user', JSON.stringify(userData));
-  }, []);
+    safeSetItem('token', jwtToken);
+    safeSetItem('user', JSON.stringify(userData));
+  }, [safeSetItem]);
 
   const login = useCallback(async ({ email, password }) => {
     const { user: userData, token: jwtToken } = await authService.login({ email, password });
@@ -66,12 +86,4 @@ export function AuthProvider({ children }) {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 }

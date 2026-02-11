@@ -22,8 +22,6 @@ export const authService = {
       user: { email, password },
     });
 
-    debugger;
-
     // Extract JWT from Authorization header
     const authHeader = response.headers['authorization'] || response.headers['Authorization'];
     const token = authHeader ? authHeader.replace('Bearer ', '') : response.data.user.auth_token;
