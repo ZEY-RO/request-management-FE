@@ -1,0 +1,129 @@
+.signup {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.signup__card {
+  width: 100%;
+  max-width: 420px;
+  background: #1e293b;
+  border-radius: 16px;
+  border: 1px solid #334155;
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.signup__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.signup__logo {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.signup__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 0.5rem;
+}
+
+.signup__subtitle {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.signup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.signup__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.signup__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.signup__input {
+  padding: 0.75rem 1rem;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.signup__input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.signup__input::placeholder {
+  color: #475569;
+}
+
+.signup__btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.signup__btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.signup__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.signup__error {
+  background: #451a1a;
+  border: 1px solid #7f1d1d;
+  color: #fca5a5;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.signup__footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.signup__link {
+  color: #3b82f6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup__link:hover {
+  color: #60a5fa;
+  text-decoration: underline;
+}
