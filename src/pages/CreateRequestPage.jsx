@@ -13,30 +13,6 @@ export default function CreateRequestPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
-
-    try {
-      await requestService.create({ title, description, status, priority });
-      setSuccess(true);
-      setTitle('');
-      setDescription('');
-      setStatus('pending');
-      setPriority('low');
-      setTimeout(() => {
-        navigate(`/requests`);
-      }, 2000);
-    } catch (err) {
-      const message =
-        err.response?.data?.errors?.join(', ') || 'Failed to create request.';
-      setError(message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="create-page">
       <Navbar />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function RequestForm({
   initialData = null,
@@ -13,15 +13,6 @@ export default function RequestForm({
   const [description, setDescription] = useState(initialData?.description ?? '');
   const [status, setStatus] = useState(initialData?.status ?? 'pending');
   const [priority, setPriority] = useState(initialData?.priority ?? 'low');
-
-  useEffect(() => {
-    if (!initialData) return;
-
-    setTitle(initialData.title ?? '');
-    setDescription(initialData.description ?? '');
-    setStatus(initialData.status ?? 'pending');
-    setPriority(initialData.priority ?? 'low');
-  }, [initialData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
