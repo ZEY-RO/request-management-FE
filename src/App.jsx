@@ -6,7 +6,7 @@ import SignupPage from './pages/SignupPage';
 import RequestsPage from './pages/RequestsPage';
 import RequestDetailPage from './pages/RequestDetailPage';
 import CreateRequestPage from './pages/CreateRequestPage';
-import RequestEditPage from './pages/RequestEditPage';
+import EditRequestPage from './pages/EditRequestPage';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
           path="/requests/:id/edit"
           element={
             <ProtectedRoute>
-              <RequestEditPage />
+              <EditRequestPage />
             </ProtectedRoute>
           }
         />
